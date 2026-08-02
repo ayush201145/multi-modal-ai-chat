@@ -59,7 +59,16 @@ export async function POST(request) {
       })),
     });
 
-    return result.toDataStreamResponse();
+    // Stream the response safely across AI SDK versions
+    if (typeof result.toDataStreamResponse === "function") {
+      return result.toDataStreamResponse();
+    }
+    if (typeof result.toTextStreamResponse === "function") {
+      return result.toTextStreamResponse();
+    }
+    return new Response(result.textStream, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   } catch (error) {
     console.error("Chat error:", error);
 

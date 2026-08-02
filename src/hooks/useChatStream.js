@@ -48,36 +48,39 @@ export function useChatStream({ token, onError }) {
         }
 
         const decoder = new TextDecoder();
+        let isDataStream = false;
         let buffer = "";
 
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() || "";
+          const chunk = decoder.decode(value, { stream: true });
+          
+          if (!isDataStream && (chunk.startsWith("0:") || chunk.includes("\n0:"))) {
+            isDataStream = true;
+          }
 
-          for (const line of lines) {
-            // Vercel AI SDK data stream format
-            // Text chunks are prefixed with "0:"
-            if (line.startsWith("0:")) {
-              try {
-                const text = JSON.parse(line.slice(2));
-                assistantMessage += text;
-              } catch {
-                // Not JSON, skip
+          if (isDataStream) {
+            buffer += chunk;
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              if (line.startsWith("0:")) {
+                try {
+                  const text = JSON.parse(line.slice(2));
+                  assistantMessage += text;
+                } catch {}
+              } else if (line.startsWith("3:")) {
+                try {
+                  const errorText = JSON.parse(line.slice(2));
+                  onError?.({ title: "Stream Error", message: errorText });
+                } catch {}
               }
             }
-            // Error chunks are prefixed with "3:"
-            if (line.startsWith("3:")) {
-              try {
-                const errorText = JSON.parse(line.slice(2));
-                onError?.({ title: "Stream Error", message: errorText });
-              } catch {
-                // skip
-              }
-            }
+          } else {
+            assistantMessage += chunk;
           }
         }
 
