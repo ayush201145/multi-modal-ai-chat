@@ -1,0 +1,52 @@
+"use client";
+import { motion } from "framer-motion";
+import ModelSelector from "./ModelSelector";
+import { Menu, LogOut, Wifi, WifiOff } from "lucide-react";
+
+export default function Header({
+  providers,
+  selectedModel,
+  onSelectModel,
+  onToggleSidebar,
+  onLogout,
+  isConnected,
+}) {
+  return (
+    <header className="app-header">
+      <div className="header-left">
+        <motion.button
+          className="header-menu-btn"
+          onClick={onToggleSidebar}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <Menu size={20} />
+        </motion.button>
+
+        <ModelSelector
+          providers={providers}
+          selectedModel={selectedModel}
+          onSelectModel={onSelectModel}
+        />
+      </div>
+
+      <div className="header-right">
+        {/* Connection status */}
+        <div className={`header-status ${isConnected ? "header-status-online" : "header-status-offline"}`}>
+          {isConnected ? <Wifi size={14} /> : <WifiOff size={14} />}
+          <span>{isConnected ? "Connected" : "Offline"}</span>
+        </div>
+
+        <motion.button
+          className="header-logout-btn"
+          onClick={onLogout}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title="Logout"
+        >
+          <LogOut size={18} />
+        </motion.button>
+      </div>
+    </header>
+  );
+}
