@@ -10,7 +10,7 @@ export function useChatStream({ token, onError }) {
   const abortRef = useRef(null);
 
   const sendMessage = useCallback(
-    async (messages, provider, model) => {
+    async (messages, provider, model, onChunk) => {
       setIsStreaming(true);
       abortRef.current = new AbortController();
 
@@ -71,6 +71,7 @@ export function useChatStream({ token, onError }) {
                 try {
                   const text = JSON.parse(line.slice(2));
                   assistantMessage += text;
+                  onChunk?.(assistantMessage);
                 } catch {}
               } else if (line.startsWith("3:")) {
                 try {
@@ -81,6 +82,7 @@ export function useChatStream({ token, onError }) {
             }
           } else {
             assistantMessage += chunk;
+            onChunk?.(assistantMessage);
           }
         }
 

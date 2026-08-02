@@ -144,17 +144,22 @@ export default function ChatApp({ token, onLogout }) {
 
       setStreamingContent("");
 
-      // Get updated messages for API call
-      const chatMessages = [
-        ...(chats.find((c) => c.id === currentChatId)?.messages || []),
-        userMessage,
-      ].map((m) => ({ role: m.role, content: m.content }));
+      // Prepare chat history + new message for API
+      const previousMessages = activeChatId
+        ? (chats.find((c) => c.id === currentChatId)?.messages || [])
+        : [];
+      
+      const chatMessages = [...previousMessages, userMessage].map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
 
       // Stream response
       const result = await sendMessage(
         chatMessages,
         selectedModel.provider,
-        selectedModel.modelId
+        selectedModel.modelId,
+        (chunkText) => setStreamingContent(chunkText)
       );
 
       if (result) {
