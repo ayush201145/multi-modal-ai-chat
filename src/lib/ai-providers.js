@@ -14,7 +14,6 @@ export const MODEL_REGISTRY = {
     models: [
       { id: "gpt-4o", name: "GPT-4o", description: "Most capable model" },
       { id: "gpt-4o-mini", name: "GPT-4o Mini", description: "Fast & affordable" },
-      { id: "gpt-4-turbo", name: "GPT-4 Turbo", description: "High capability, large context" },
       { id: "gpt-3.5-turbo", name: "GPT-3.5 Turbo", description: "Fast & cost-effective" },
     ],
   },
@@ -35,9 +34,9 @@ export const MODEL_REGISTRY = {
     icon: "gem",
     color: "#4285f4",
     models: [
-      { id: "gemini-2.0-flash", name: "Gemini 2.0 Flash", description: "Latest fast model" },
-      { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", description: "Most capable Gemini" },
-      { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash", description: "Fast & efficient" },
+      { id: "gemini-2.0-flash-exp", name: "Gemini 2.0 Flash (Exp)", description: "Latest experimental model" },
+      { id: "gemini-1.5-pro-latest", name: "Gemini 1.5 Pro", description: "Most capable Gemini" },
+      { id: "gemini-1.5-flash-latest", name: "Gemini 1.5 Flash", description: "Fast & efficient" },
     ],
   },
   openrouter: {
@@ -46,10 +45,11 @@ export const MODEL_REGISTRY = {
     icon: "route",
     color: "#6366f1",
     models: [
-      { id: "meta-llama/llama-3.1-70b-instruct", name: "Llama 3.1 70B", description: "Meta's open model" },
-      { id: "mistralai/mixtral-8x7b-instruct", name: "Mixtral 8x7B", description: "Mistral MoE model" },
-      { id: "google/gemma-2-27b-it", name: "Gemma 2 27B", description: "Google's open model" },
+      { id: "meta-llama/llama-3.3-70b-instruct", name: "Llama 3.3 70B", description: "Meta's flagship open model" },
+      { id: "meta-llama/llama-3.1-70b-instruct", name: "Llama 3.1 70B", description: "Meta open model" },
+      { id: "deepseek/deepseek-r1", name: "DeepSeek R1", description: "Open reasoning model" },
       { id: "qwen/qwen-2.5-72b-instruct", name: "Qwen 2.5 72B", description: "Alibaba's flagship" },
+      { id: "google/gemma-2-27b-it", name: "Gemma 2 27B", description: "Google open model" },
     ],
   },
 };
