@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import ModelSelector from "./ModelSelector";
-import { Menu, LogOut, Wifi, WifiOff } from "lucide-react";
+import { Menu, LogOut, Wifi, WifiOff, ShieldCheck } from "lucide-react";
 
 export default function Header({
   providers,
@@ -9,6 +9,7 @@ export default function Header({
   onSelectModel,
   onToggleSidebar,
   onLogout,
+  onOpenDiagnostics,
   isConnected,
 }) {
   return (
@@ -36,6 +37,17 @@ export default function Header({
           {isConnected ? <Wifi size={14} /> : <WifiOff size={14} />}
           <span>{isConnected ? "Connected" : "Offline"}</span>
         </div>
+
+        <motion.button
+          className="header-check-btn"
+          onClick={onOpenDiagnostics}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title="Check API Keys & Available Models"
+        >
+          <ShieldCheck size={15} />
+          <span className="hidden sm:inline">Check Models</span>
+        </motion.button>
 
         <motion.button
           className="header-logout-btn"

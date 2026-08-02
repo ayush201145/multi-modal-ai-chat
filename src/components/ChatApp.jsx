@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import ChatWindow from "./ChatWindow";
+import KeyDiagnosticsModal from "./KeyDiagnosticsModal";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useChatStream } from "@/hooks/useChatStream";
 
@@ -20,6 +21,7 @@ export default function ChatApp({ token, onLogout }) {
 
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const [providers, setProviders] = useState(null);
   const [isConnected, setIsConnected] = useState(true);
   const [streamingContent, setStreamingContent] = useState("");
@@ -215,6 +217,7 @@ export default function ChatApp({ token, onLogout }) {
           onSelectModel={setSelectedModel}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           onLogout={onLogout}
+          onOpenDiagnostics={() => setDiagnosticsOpen(true)}
           isConnected={isConnected}
         />
 
@@ -227,6 +230,12 @@ export default function ChatApp({ token, onLogout }) {
           selectedModel={selectedModel}
         />
       </main>
+
+      <KeyDiagnosticsModal
+        isOpen={diagnosticsOpen}
+        onClose={() => setDiagnosticsOpen(false)}
+        token={token}
+      />
     </div>
   );
 }
