@@ -6,7 +6,9 @@ import LockScreen from "@/components/LockScreen";
 import ChatApp from "@/components/ChatApp";
 
 export default function Home() {
-  const { token, isAuthenticated, loading, error, login, logout, clearError } = useAuth();
+  const { token, mounted, isAuthenticated, loading, error, login, logout, clearError } = useAuth();
+
+  if (!mounted) return null;
 
   return (
     <>

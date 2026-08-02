@@ -68,12 +68,14 @@ export default function Sidebar({
         <div className="sidebar-list">
           <AnimatePresence initial={false}>
             {chats.map((chat) => (
-              <motion.button
+              <motion.div
                 key={chat.id}
                 className={`sidebar-chat-item ${
                   chat.id === activeChatId ? "sidebar-chat-active" : ""
                 }`}
                 onClick={() => onSelectChat(chat.id)}
+                role="button"
+                tabIndex={0}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20, height: 0 }}
@@ -92,7 +94,7 @@ export default function Sidebar({
                 >
                   <Trash2 size={14} />
                 </button>
-              </motion.button>
+              </motion.div>
             ))}
           </AnimatePresence>
 

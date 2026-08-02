@@ -1,16 +1,20 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 /**
  * Auth hook — manages login state and session token.
  */
 export function useAuth() {
-  const [token, setToken] = useState(() => {
-    if (typeof window === "undefined") return null;
-    return sessionStorage.getItem("nexus_token");
-  });
+  const [token, setToken] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const savedToken = sessionStorage.getItem("nexus_token");
+    if (savedToken) setToken(savedToken);
+    setMounted(true);
+  }, []);
 
   const login = useCallback(async (password) => {
     setLoading(true);
@@ -49,6 +53,7 @@ export function useAuth() {
 
   return {
     token,
+    mounted,
     isAuthenticated: !!token,
     loading,
     error,
