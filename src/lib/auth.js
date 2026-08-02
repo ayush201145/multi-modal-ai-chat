@@ -7,7 +7,7 @@ const SECRET_PREFIX = "nexus-chat-v1";
  * Token = HMAC-SHA256( SECRET_PREFIX + password, randomSalt ) + "." + salt
  */
 export function generateToken() {
-  const password = process.env.APP_PASSWORD;
+  const password = process.env.APP_PASSWORD || process.env.CODE;
   if (!password) throw new Error("APP_PASSWORD is not configured");
 
   const salt = randomBytes(16).toString("hex");
@@ -22,7 +22,7 @@ export function generateToken() {
  * Validate a session token against the configured APP_PASSWORD.
  */
 export function validateToken(token) {
-  const password = process.env.APP_PASSWORD;
+  const password = process.env.APP_PASSWORD || process.env.CODE;
   if (!password || !token) return false;
 
   const parts = token.split(".");
@@ -40,7 +40,7 @@ export function validateToken(token) {
  * Validate the password directly.
  */
 export function validatePassword(password) {
-  const appPassword = process.env.APP_PASSWORD;
+  const appPassword = process.env.APP_PASSWORD || process.env.CODE;
   if (!appPassword) return false;
   return password === appPassword;
 }

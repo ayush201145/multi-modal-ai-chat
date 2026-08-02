@@ -12,9 +12,9 @@ export async function POST(request) {
       );
     }
 
-    if (!process.env.APP_PASSWORD) {
+    if (!process.env.APP_PASSWORD && !process.env.CODE) {
       return Response.json(
-        { error: { title: "Not Configured", message: "APP_PASSWORD environment variable is not set." } },
+        { error: { title: "Not Configured", message: "APP_PASSWORD or CODE environment variable is not set." } },
         { status: 503 }
       );
     }
