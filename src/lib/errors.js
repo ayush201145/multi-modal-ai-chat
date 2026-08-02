@@ -76,48 +76,38 @@ export function classifyError(error) {
     error?.response?.data?.error?.message ||
     "An unexpected error occurred";
 
-  // Match against known patterns
-  const mapped = ERROR_MAP[statusCode];
-
-  if (mapped) {
-    return {
-      ...mapped,
-      detail: errorMessage,
-    };
-  }
-
-  // Check message content for clues
   const lowerMessage = errorMessage.toLowerCase();
 
   if (lowerMessage.includes("quota") || lowerMessage.includes("billing") || lowerMessage.includes("insufficient_quota")) {
-    return { ...ERROR_MAP[402], detail: errorMessage };
+    return { ...ERROR_MAP[402], message: errorMessage, detail: errorMessage };
   }
 
   if (lowerMessage.includes("rate") || lowerMessage.includes("throttl")) {
-    return { ...ERROR_MAP[429], detail: errorMessage };
+    return { ...ERROR_MAP[429], message: errorMessage, detail: errorMessage };
   }
 
-  if (lowerMessage.includes("unauthorized") || lowerMessage.includes("invalid api key") || lowerMessage.includes("invalid x-api-key")) {
-    return { ...ERROR_MAP[401], detail: errorMessage };
+  if (lowerMessage.includes("unauthorized") || lowerMessage.includes("invalid api key") || lowerMessage.includes("invalid x-api-key") || lowerMessage.includes("incorrect api key")) {
+    return { ...ERROR_MAP[401], message: errorMessage, detail: errorMessage };
   }
 
   if (lowerMessage.includes("permission") || lowerMessage.includes("access denied") || lowerMessage.includes("not allowed")) {
-    return { ...ERROR_MAP[403], detail: errorMessage };
+    return { ...ERROR_MAP[403], message: errorMessage, detail: errorMessage };
   }
 
   if (lowerMessage.includes("timeout") || lowerMessage.includes("timed out")) {
-    return { ...ERROR_MAP[504], detail: errorMessage };
+    return { ...ERROR_MAP[504], message: errorMessage, detail: errorMessage };
   }
 
   if (lowerMessage.includes("not found") || lowerMessage.includes("does not exist")) {
-    return { ...ERROR_MAP[404], detail: errorMessage };
+    return { ...ERROR_MAP[404], message: errorMessage, detail: errorMessage };
   }
 
-  // Fallback
+  const mapped = ERROR_MAP[statusCode];
+
   return {
     status: statusCode >= 400 ? statusCode : 500,
-    title: "Error",
-    message: errorMessage,
+    title: mapped?.title || "Error",
+    message: errorMessage !== "An unexpected error occurred" ? errorMessage : (mapped?.message || errorMessage),
     detail: errorMessage,
   };
 }

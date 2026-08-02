@@ -24,7 +24,6 @@ export const MODEL_REGISTRY = {
     icon: "brain",
     color: "#d97706",
     models: [
-      { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", description: "Latest balanced model" },
       { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet", description: "Best balance of speed & quality" },
       { id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku", description: "Fastest Claude model" },
       { id: "claude-3-opus-20240229", name: "Claude 3 Opus", description: "Most powerful Claude" },
